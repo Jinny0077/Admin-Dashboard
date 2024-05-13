@@ -15,6 +15,43 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
+import EqualizerOutlinedIcon from "@mui/icons-material/EqualizerOutlined";
+
+const ParentItem = ({ title, icon, selected, setSelected, children }) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Box
+        onClick={() => setOpen(!open)}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          cursor: "pointer",
+          padding: "10px",
+        }}
+      >
+        <Box mr={1}>{icon}</Box>
+        <Typography>{title}</Typography>
+        {open ? <ExpandMoreIcon /> : <ChevronRightIcon />}
+      </Box>
+      {open &&
+        children.map((child) => (
+          <Item
+            key={child.title}
+            title={child.title}
+            to={child.to}
+            icon={child.icon}
+            selected={selected}
+            setSelected={setSelected}
+          />
+        ))}
+    </>
+  );
+};
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -27,10 +64,10 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
       sx={{
         display: "flex",
         alignItems: "center",
-
         textDecoration: "none",
         cursor: "pointer",
         padding: "10px",
+        marginLeft: "20px",
       }}
     >
       {icon && <Box mr={1}>{icon}</Box>}
@@ -51,83 +88,145 @@ const Sidebar = () => {
     <Drawer
       anchor="left"
       open={!isCollapsed}
-      onClose={() => setIsCollapsed(true)}
+      onClose={() => setIsCollapsed(false)}
       sx={{
         ".MuiDrawer-paper": {
-          background: `${colors.primary[600]} `,
+          background: colors.grey[700],
         },
       }}
     >
       <Box>
         {/* LOGO AND MENU ICON */}
         <Box
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
           style={{
             margin: "10px 0 20px 0",
             color: colors.grey[100],
             width: "250px",
           }}
         >
-          {!isCollapsed && (
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              ml="15px"
-            >
-              <Typography variant="h3" color={colors.grey[100]}>
-                ADMINIS
-              </Typography>
-              <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                <MenuOutlinedIcon />
-              </IconButton>
-            </Box>
-          )}
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            ml="15px"
+          >
+            <Typography variant="h3" color={colors.grey[900]}>
+              DASHPRO
+            </Typography>
+            <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
+              <MenuOutlinedIcon />
+            </IconButton>
+          </Box>
         </Box>
         {/* User */}
-        {!isCollapsed && (
-          <Box mb="25px">
-            <Box display="flex" justifyContent="center" alignItems="center">
-              <img
-                alt="profile-user"
-                width="100px"
-                height="100px"
-                src={"../../../src/assets/user.png"}
-                style={{ cursor: "pointer", borderRadius: "50%" }}
-              />
-            </Box>
-            <Box textAlign="center">
-              <Typography
-                variant="h2"
-                color={colors.grey[100]}
-                fontWeight="bold"
-                sx={{ m: "10px 0 0 0" }}
-              >
-                Jinny
-              </Typography>
-              <Typography variant="h5" color={colors.greenAccent[500]}>
-                Admin
-              </Typography>
-            </Box>
+
+        <Box mb="25px">
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <img
+              alt="profile-user"
+              width="100px"
+              height="100px"
+              src={"../../../src/assets/user.png"}
+              style={{ cursor: "pointer", borderRadius: "50%" }}
+            />
           </Box>
-        )}
+          <Box textAlign="center">
+            <Typography
+              variant="h2"
+              color={colors.grey[900]}
+              fontWeight="bold"
+              sx={{ m: "10px 0 0 0" }}
+            >
+              Jinny
+            </Typography>
+            <Typography variant="h5" color={colors.greenAccent[700]}>
+              Admin
+            </Typography>
+          </Box>
+        </Box>
 
         {/* Menu Items */}
-        <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+        <Box paddingLeft={"10%"}>
           <Item
             title="Dashboard"
+            icon={<HomeOutlinedIcon />}
+            selected={selected}
+            setSelected={setSelected}
             to="/"
-            icon={<HomeOutlinedIcon />}
-            selected={selected}
-            setSelected={setSelected}
           />
-          <Item
-            title="Manage Team"
-            to="/manageTeam"
-            icon={<HomeOutlinedIcon />}
+          <ParentItem
+            title="Data"
+            icon={<PeopleOutlinedIcon />}
             selected={selected}
             setSelected={setSelected}
+            children={[
+              {
+                title: "Manage Team",
+                to: "/manageTeam",
+                icon: <PeopleOutlinedIcon />,
+              },
+              {
+                title: "Contacts Information",
+                to: "/contacts",
+                icon: <ContactsOutlinedIcon />,
+              },
+              {
+                title: "Invoice Balances",
+                to: "/invoices",
+                icon: <ReceiptOutlinedIcon />,
+              },
+            ]}
+          />
+          <ParentItem
+            title="Pages"
+            icon={<FileCopyOutlinedIcon />}
+            selected={selected}
+            setSelected={setSelected}
+            children={[
+              {
+                title: "Profile Form",
+                to: "/form",
+                icon: <PersonOutlinedIcon />,
+              },
+              {
+                title: "Calendar",
+                to: "/calendar",
+                icon: <CalendarTodayOutlinedIcon />,
+              },
+              {
+                title: "FAQ Page",
+                to: "/faq",
+                icon: <HelpOutlineOutlinedIcon />,
+              },
+            ]}
+          />
+          <ParentItem
+            title="Charts"
+            icon={<EqualizerOutlinedIcon />}
+            selected={selected}
+            setSelected={setSelected}
+            children={[
+              {
+                title: "Bar Chart",
+                to: "/bar",
+                icon: <BarChartOutlinedIcon />,
+              },
+              {
+                title: "Pie Chart",
+                to: "/pie",
+                icon: <PieChartOutlineOutlinedIcon />,
+              },
+              {
+                title: "Line Chart",
+                to: "/line",
+                icon: <TimelineOutlinedIcon />,
+              },
+              {
+                title: "Geography Chart",
+                to: "/geography",
+                icon: <MapOutlinedIcon />,
+              },
+            ]}
           />
         </Box>
       </Box>

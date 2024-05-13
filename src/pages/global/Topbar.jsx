@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { ColorModeContext, tokens } from "../../theme";
 import { useTheme } from "@emotion/react";
 import { Box, IconButton, InputBase, Switch } from "@mui/material";
@@ -15,42 +15,62 @@ const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const toggleSidebar = () => {
+    console.log("Before toggle:", isSidebarOpen);
+    setIsSidebarOpen(!isSidebarOpen);
 
-  const [isCollapsed, setIsCollapsed] = useState(false);
+    console.log("After toggle:", isSidebarOpen);
+  };
 
   return (
-    <Box display="flex" justifyContent="space-between" p={2}>
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      p={2}
+      backgroundColor={colors.grey[800]}
+    >
       {/* Sidebar for reopen */}
-      <Box marginTop="10px" onClick={() => setIsCollapsed(false)}>
-        <MenuOutlinedIcon />
-        {isCollapsed ? <Sidebar /> : undefined}
-        <Sidebar />
-      </Box>
-      {/* Search Bar */}
-      <Box
-        display="flex"
-        backgroundColor={colors.primary[400]}
-        borderRadius="3px"
-      >
-        <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
-        <IconButton type="button" sx={{ p: 1 }}>
-          <SearchIcon />
+      <Box display="flex">
+        <IconButton onClick={toggleSidebar}>
+          <MenuOutlinedIcon />
         </IconButton>
+        {isSidebarOpen && <Sidebar />}
+
+        {/* Search Bar */}
+        <Box
+          display="flex"
+          backgroundColor={colors.primary[400]}
+          borderRadius="3px"
+          ml="20px"
+        >
+          <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
+          <IconButton type="button" sx={{ p: 1 }}>
+            <SearchIcon />
+          </IconButton>
+        </Box>
       </Box>
 
       {/* Icons */}
       <Box display="flex">
-        {/* <IconButton onClick={colorMode.toggleColorMode}>
-          {theme.palette.mode == "dark" ? (
-            <DarkModeOutlinedIcon />
-          ) : (
-            <LightModeOutlinedIcon />
-          )}
-        </IconButton> */}
         <Switch
           onChange={colorMode.toggleColorMode}
           icon={<LightModeOutlinedIcon />}
           checkedIcon={<DarkModeOutlinedIcon />}
+          sx={{
+            "& .MuiSwitch-track": {
+              backgroundColor:
+                theme.palette.mode === "dark"
+                  ? colors.primary[900]
+                  : colors.primary[100], // Adjust track color for dark mode
+            },
+            "& .MuiSwitch-thumb": {
+              color:
+                theme.palette.mode === "dark"
+                  ? colors.grey[100]
+                  : colors.grey[800], // Adjust thumb color for dark mode
+            },
+          }}
         />
         <IconButton>
           <NotificationsOutlinedIcon />

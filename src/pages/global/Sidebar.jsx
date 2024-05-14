@@ -20,7 +20,14 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import EqualizerOutlinedIcon from "@mui/icons-material/EqualizerOutlined";
 
-const ParentItem = ({ title, icon, selected, setSelected, children }) => {
+const ParentItem = ({
+  title,
+  icon,
+  selected,
+  setSelected,
+  setIsCollapsed,
+  children,
+}) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -47,20 +54,24 @@ const ParentItem = ({ title, icon, selected, setSelected, children }) => {
             icon={child.icon}
             selected={selected}
             setSelected={setSelected}
+            setIsCollapsed={setIsCollapsed}
           />
         ))}
     </>
   );
 };
 
-const Item = ({ title, to, icon, selected, setSelected }) => {
+const Item = ({ title, to, icon, selected, setSelected, setIsCollapsed }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
     <Box
       active={selected === title ? "true" : undefined}
       style={{ color: colors.grey[100] }}
-      onClick={() => setSelected(title)}
+      onClick={() => {
+        setSelected(title);
+        setIsCollapsed(true);
+      }}
       sx={{
         display: "flex",
         alignItems: "center",
@@ -80,7 +91,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 
 const Sidebar = () => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.colors);
+  const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
 
@@ -91,7 +102,8 @@ const Sidebar = () => {
       onClose={() => setIsCollapsed(false)}
       sx={{
         ".MuiDrawer-paper": {
-          background: colors.grey[700],
+          background: colors.primary[400],
+          // background: colors.grey[700],
         },
       }}
     >
@@ -100,7 +112,7 @@ const Sidebar = () => {
         <Box
           style={{
             margin: "10px 0 20px 0",
-            color: colors.grey[100],
+            // color: colors.grey[100],
             width: "250px",
           }}
         >
@@ -110,7 +122,7 @@ const Sidebar = () => {
             alignItems="center"
             ml="15px"
           >
-            <Typography variant="h3" color={colors.grey[900]}>
+            <Typography variant="h3" color={colors.grey[100]}>
               DASHPRO
             </Typography>
             <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -133,13 +145,13 @@ const Sidebar = () => {
           <Box textAlign="center">
             <Typography
               variant="h2"
-              color={colors.grey[900]}
+              color={colors.grey[100]}
               fontWeight="bold"
               sx={{ m: "10px 0 0 0" }}
             >
               Jinny
             </Typography>
-            <Typography variant="h5" color={colors.greenAccent[700]}>
+            <Typography variant="h5" color={colors.greenAccent[500]}>
               Admin
             </Typography>
           </Box>
@@ -152,6 +164,7 @@ const Sidebar = () => {
             icon={<HomeOutlinedIcon />}
             selected={selected}
             setSelected={setSelected}
+            setIsCollapsed={setIsCollapsed}
             to="/"
           />
           <ParentItem
@@ -159,10 +172,11 @@ const Sidebar = () => {
             icon={<PeopleOutlinedIcon />}
             selected={selected}
             setSelected={setSelected}
+            setIsCollapsed={setIsCollapsed}
             children={[
               {
-                title: "Manage Team",
-                to: "/manageTeam",
+                title: "Team",
+                to: "/team",
                 icon: <PeopleOutlinedIcon />,
               },
               {
@@ -182,6 +196,7 @@ const Sidebar = () => {
             icon={<FileCopyOutlinedIcon />}
             selected={selected}
             setSelected={setSelected}
+            setIsCollapsed={setIsCollapsed}
             children={[
               {
                 title: "Profile Form",
@@ -205,6 +220,7 @@ const Sidebar = () => {
             icon={<EqualizerOutlinedIcon />}
             selected={selected}
             setSelected={setSelected}
+            setIsCollapsed={setIsCollapsed}
             children={[
               {
                 title: "Bar Chart",

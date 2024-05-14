@@ -27,7 +27,7 @@ const Topbar = () => {
     <Box
       display="flex"
       justifyContent="space-between"
-      p={2}
+      p={1}
       backgroundColor={colors.grey[800]}
     >
       {/* Sidebar for reopen */}

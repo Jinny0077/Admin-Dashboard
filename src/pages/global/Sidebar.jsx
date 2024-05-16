@@ -233,8 +233,8 @@ const Sidebar = () => {
                 icon: <PieChartOutlineOutlinedIcon />,
               },
               {
-                title: "Line Chart",
-                to: "/line",
+                title: "Area Chart",
+                to: "/area",
                 icon: <TimelineOutlinedIcon />,
               },
               {

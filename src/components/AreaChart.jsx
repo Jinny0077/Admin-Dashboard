@@ -5,7 +5,7 @@ import ApexCharts from "apexcharts";
 import { Box } from "@mui/material";
 import React, { useEffect } from "react";
 
-const AreaChart = () => {
+const AreaChart = ({ isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -21,8 +21,11 @@ const AreaChart = () => {
 
       chart: {
         type: "area",
-        height: 350,
+        height: isDashboard ? 250 : 350,
         stacked: true,
+        toolbar: {
+          show: isDashboard ? false : true,
+        },
       },
       colors: data.map((item) => item.color),
       dataLabels: {
@@ -44,6 +47,7 @@ const AreaChart = () => {
         labels: {
           colors: colors.grey[500],
         },
+        show: isDashboard ? false : true,
       },
       xaxis: {
         type: "category",
@@ -58,6 +62,23 @@ const AreaChart = () => {
           style: {
             colors: colors.grey[500],
           },
+        },
+        axisBorder: {
+          show: true,
+        },
+        axisTicks: {
+          show: true,
+        },
+      },
+      grid: {
+        show: false,
+      },
+      tooltip: {
+        theme: "dark",
+        style: {
+          fontSize: "12px",
+          fontFamily: undefined,
+          colors: [colors.grey[100]],
         },
       },
     };

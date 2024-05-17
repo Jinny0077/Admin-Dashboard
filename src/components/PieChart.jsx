@@ -5,7 +5,7 @@ import { useTheme } from "@emotion/react";
 import { tokens } from "../theme";
 import { mockPieData as data } from "../data/mockData";
 
-const PieChart = () => {
+const PieChart = ({ isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const series = data.map((item) => item.value);
@@ -39,6 +39,7 @@ const PieChart = () => {
         labels: {
           colors: colors.grey[500],
         },
+        show: isDashboard ? false : true,
       },
       title: {
         text: "Gradient Donut with custom Start-angle",

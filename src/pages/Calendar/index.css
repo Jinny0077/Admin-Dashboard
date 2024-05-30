@@ -1,0 +1,38 @@
+:root {
+  --primary-color: var(--primary-100);
+  --secondary-color: var(--greenAccent-500);
+  --text-color: var(--grey-500);
+  --background-color: var(--primary-500);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary-color: var(--primary-500);
+    --text-color: var(--grey-100);
+    --background-color: var(--primary-100);
+  }
+}
+
+.custom-container-class {
+  background-color: var(--background-color); /* Example background color */
+}
+
+.custom-popup-class {
+  background-color: purple; /* Example background color */
+}
+
+.custom-header-class {
+  background-color: yellow; /* Example background color */
+}
+
+.custom-title-class {
+  color: var(--text-color); /* Example text color */
+}
+
+.custom-content-class {
+  color: var(--text-color); /* Example text color */
+}
+
+.custom-footer-class {
+  background-color: blue; /* Example background color */
+}
